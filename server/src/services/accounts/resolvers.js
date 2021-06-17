@@ -12,7 +12,7 @@ const resolvers = {
     },
   },
   Query: {
-    viewer() {
+    viewer(parent, args, { user }, info) {
       return accounts[0]
     },
   },

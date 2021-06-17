@@ -7,6 +7,10 @@ import typeDefs from './typeDefs'
 
   const server = new ApolloServer({
     schema: buildFederatedSchema([{ typeDefs, resolvers }]),
+    context: ({ req }) => {
+      const user = req.headers.user ? JSON.parse(req.headers.user) : null
+      return { user }
+    },
   })
 
   const { url } = await server.listen({ port })
