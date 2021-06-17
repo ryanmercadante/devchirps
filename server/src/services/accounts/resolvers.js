@@ -1,3 +1,5 @@
+import auth0 from '../../config/auth0'
+
 const accounts = [
   {
     id: '1',
@@ -12,7 +14,9 @@ const resolvers = {
     },
   },
   Query: {
-    viewer(parent, args, { user }, info) {
+    async viewer(parent, args, { user }, info) {
+      const viewer = await auth0.getUser({ id: user.sub })
+      console.log('viewer', viewer)
       return accounts[0]
     },
   },
