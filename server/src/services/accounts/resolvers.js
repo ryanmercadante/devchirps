@@ -26,6 +26,15 @@ const resolvers = {
       return null
     },
   },
+  Mutation: {
+    createAccount(parent, { data: { email, password } }, context, info) {
+      return auth0.createUser({
+        connection: 'Username-Password-Authentication',
+        email,
+        password,
+      })
+    },
+  },
 }
 
 export default resolvers
