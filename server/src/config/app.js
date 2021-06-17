@@ -18,7 +18,8 @@ const jwtCheck = jwt({
 })
 
 app.use(jwtCheck, (err, req, res, next) => {
-  if (err.code === 'invalid_token') {
+  console.log('error!!!!!!!!!!!', err.code)
+  if (err.code === 'credentials_required') {
     return next()
   }
   return next(err)

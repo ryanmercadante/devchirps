@@ -2,7 +2,7 @@ import { ApolloServer } from 'apollo-server'
 import { buildFederatedSchema } from '@apollo/federation'
 import resolvers from './resolvers'
 import typeDefs from './typeDefs'
-;(async () => {
+;(async function () {
   const port = process.env.ACCOUNTS_SERVICE_PORT
 
   const server = new ApolloServer({
