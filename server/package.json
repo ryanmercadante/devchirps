@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config -r esm ./src/index.js"
+    "dev:gateway": "nodemon -r dotenv/config -r esm ./src/index.js",
+    "dev:accounts": "nodemon -r dotenv/config -r esm ./src/services/accounts/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@apollo/federation": "^0.25.1",
+    "@apollo/gateway": "^0.29.1",
     "apollo-server": "^2.25.1",
     "apollo-server-express": "^2.25.1",
     "dotenv": "^10.0.0",
