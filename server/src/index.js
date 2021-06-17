@@ -1,27 +1,7 @@
-import { ApolloServer, gql } from 'apollo-server-express'
-import express from 'express'
+import app from './config/app'
+import server from './config/apollo'
 
-const app = express()
 const port = process.env.PORT
-
-const typeDefs = gql`
-  type Query {
-    hello: String
-  }
-`
-
-const resolvers = {
-  Query: {
-    hello() {
-      return 'world'
-    },
-  },
-}
-
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-})
 
 server.applyMiddleware({ app })
 
