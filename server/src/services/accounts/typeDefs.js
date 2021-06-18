@@ -30,6 +30,7 @@ const typeDefs = gql`
 
   extend type Mutation {
     createAccount(data: CreateAccountInput!): Account!
+    deleteAccount(where: AccountWhereUniqueInput!): Boolean!
     updateAccount(
       data: UpdateAccountInput!
       where: AccountWhereUniqueInput!

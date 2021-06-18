@@ -36,6 +36,10 @@ const resolvers = {
         password,
       })
     },
+    async deleteAccount(parent, { where: { id } }, context, info) {
+      await auth0.deleteUser({ id })
+      return true
+    },
     async updateAccount(
       parent,
       { data: { email, newPassword, password }, where: { id } },
