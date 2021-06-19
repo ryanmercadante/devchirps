@@ -36,6 +36,35 @@ const resolvers = {
     },
   },
   Mutation: {
+    async changeAccountModeratorRole(parent, { where: { id } }, context, info) {
+      const authorPermissions = [
+        'read:own_account',
+        'edit:own_account',
+        'read:any_profile',
+        'edit:own_profile',
+        'read:any_content',
+        'edit:own_content',
+        'upload:own_media',
+      ]
+      const moderatorPermissions = [
+        'read:any_account',
+        'block:any_account',
+        'promote:any_account',
+        'block:any_content',
+      ]
+
+      const user = await auth0.getUser({ id })
+      const isModerator = user.app_metadata.roles.includes('moderator')
+      const roles = isModerator ? ['author'] : ['moderator']
+      const permissions = isModerator
+        ? authorPermissions
+        : authorPermissions.concat(moderatorPermissions)
+
+      return auth0.updateUser(
+        { id },
+        { app_metadata: { groups: [], roles, permissions } }
+      )
+    },
     createAccount(parent, { data: { email, password } }, context, info) {
       return auth0.createUser({
         app_metadata: {

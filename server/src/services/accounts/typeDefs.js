@@ -30,6 +30,7 @@ const typeDefs = gql`
   }
 
   extend type Mutation {
+    changeAccountModeratorRole(where: AccountWhereUniqueInput!): Account!
     createAccount(data: CreateAccountInput!): Account!
     deleteAccount(where: AccountWhereUniqueInput!): Boolean!
     updateAccount(
