@@ -13,6 +13,9 @@ const resolvers = {
     createdAt(account, args, context, info) {
       return account.created_at
     },
+    isBlocked(account, args, context, info) {
+      return account.blocked
+    },
     isModerator(account, args, context, info) {
       return (
         account.app_metadata &&
@@ -36,6 +39,10 @@ const resolvers = {
     },
   },
   Mutation: {
+    async changeAccountBlockedStatus(parent, { where: { id } }, context, info) {
+      const { blocked } = await auth0.getUser({ id })
+      return auth0.updateUser({ id }, { blocked: !blocked })
+    },
     async changeAccountModeratorRole(parent, { where: { id } }, context, info) {
       const authorPermissions = [
         'read:own_account',
