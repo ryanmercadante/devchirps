@@ -1,8 +1,10 @@
 import { UserInputError } from 'apollo-server-express'
 import auth0 from '../../config/auth0'
+import { DateTimeResolver } from '../../lib/customScalars'
 import getToken from '../../lib/getToken'
 
 const resolvers = {
+  DateTime: DateTimeResolver,
   Account: {
     __resolveReference(reference, context, info) {
       return auth0.getUser({ id: reference.id })

@@ -26,6 +26,7 @@
     "graphql-shield": "^7.5.0",
     "jwks-rsa": "^2.0.3",
     "request": "^2.88.2",
+    "validator": "^13.6.0",
     "wait-on": "^5.3.0"
   },
   "devDependencies": {
