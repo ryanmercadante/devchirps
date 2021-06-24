@@ -2,7 +2,13 @@ import { ApolloGateway, RemoteGraphQLDataSource } from '@apollo/gateway'
 import { ApolloServer } from 'apollo-server-express'
 
 const gateway = new ApolloGateway({
-  serviceList: [{ name: 'accounts', url: process.env.ACCOUNTS_SERVICE_URL }],
+  serviceList: [
+    { name: 'accounts', url: process.env.ACCOUNTS_SERVICE_URL },
+    {
+      name: 'profiles',
+      url: process.env.PROFILES_SERVICE_URL,
+    },
+  ],
   buildService({ url }) {
     return new RemoteGraphQLDataSource({
       url,

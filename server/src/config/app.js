@@ -18,7 +18,6 @@ const jwtCheck = jwt({
 })
 
 app.use(jwtCheck, (err, req, res, next) => {
-  console.log('error!!!!!!!!!!!', err.code)
   if (err.code === 'credentials_required') {
     return next()
   }
