@@ -27,6 +27,10 @@ import auth0 from '../../config/auth0'
     },
   })
 
-  const { url } = await server.listen({ port })
-  console.log(`Accounts service ready at ${url}`)
+  try {
+    const { url } = await server.listen({ port })
+    console.log(`Accounts service ready at ${url}`)
+  } catch (err) {
+    console.error('Error starting Accounts service:', err)
+  }
 })()

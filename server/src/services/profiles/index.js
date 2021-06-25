@@ -31,6 +31,10 @@ import typeDefs from './typeDefs'
 
   initMongoose()
 
-  const { url } = await server.listen({ port })
-  console.log(`Profiles service ready at ${url}`)
+  try {
+    const { url } = await server.listen({ port })
+    console.log(`Profiles service ready at ${url}`)
+  } catch (err) {
+    console.error('Error starting Profiles service:', err)
+  }
 })()
