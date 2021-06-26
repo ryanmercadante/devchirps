@@ -1,8 +1,10 @@
 import { DataSource } from 'apollo-datasource'
+// import gravatarUrl from 'gravatar-url'
 
 class ProfilesDataSource extends DataSource {
-  constructor({ Profile }) {
+  constructor({ auth0, Profile }) {
     super()
+    this.auth0 = auth0
     this.Profile = Profile
   }
 
@@ -23,6 +25,15 @@ class ProfilesDataSource extends DataSource {
       accountId: viewerAccountId,
     }).exec()
     return viewerProfile.following.includes(profileId)
+  }
+
+  async createProfile(profile) {
+    // const account = await this.auth0.getUser({ id: profile.accountId })
+    // const avatar = gravatarUrl(account.email, { default: 'mm' })
+    // profile.avatar = avatar
+    const newProfile = new this.Profile(profile)
+
+    return newProfile.save()
   }
 }
 
