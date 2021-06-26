@@ -42,6 +42,14 @@ const resolvers = {
     createProfile(parent, { data }, { dataSources }, info) {
       return dataSources.profilesAPI.createProfile(data)
     },
+    updateProfile(
+      parent,
+      { data, where: { username: currentUsername } },
+      { dataSources },
+      info
+    ) {
+      return dataSources.profilesAPI.updateProfile(currentUsername, data)
+    },
   },
 }
 

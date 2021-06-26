@@ -1,4 +1,5 @@
 import { DataSource } from 'apollo-datasource'
+import { UserInputError } from 'apollo-server-express'
 // import gravatarUrl from 'gravatar-url'
 
 class ProfilesDataSource extends DataSource {
@@ -34,6 +35,22 @@ class ProfilesDataSource extends DataSource {
     const newProfile = new this.Profile(profile)
 
     return newProfile.save()
+  }
+
+  updateProfile(currentUsername, { description, fullName, username }) {
+    if (!description && !fullName && !username) {
+      throw new UserInputError('You must supply some profile data to update.')
+    }
+
+    const data = {
+      ...(description && { description }),
+      ...(fullName && { fullName }),
+      ...(username && { username }),
+    }
+
+    return this.Profile.findOneAndUpdate({ username: currentUsername }, data, {
+      new: true,
+    })
   }
 }
 
