@@ -71,6 +71,14 @@ const typeDefs = gql`
     username: String!
   }
 
+  """
+  Provides the unique MongoDB document ID of an existing profile.
+  """
+  input FollowingProfileInput {
+    "The unique profile ID of the user to be followed or unfollowed."
+    followingProfileId: ID!
+  }
+
   extend type Mutation {
     "Creates a new profile tied to an Auth0 account."
     createProfile(data: CreateProfileInput!): Profile!
@@ -83,6 +91,18 @@ const typeDefs = gql`
 
     "Deletes a user profile."
     deleteProfile(where: ProfileWhereUniqueInput!): ID!
+
+    "Allows one user to follow another."
+    followProfile(
+      data: FollowingProfileInput!
+      where: ProfileWhereUniqueInput!
+    ): Profile!
+
+    "Allows on user to unfollow another."
+    unfollowProfile(
+      data: FollowingProfileInput!
+      where: ProfileWhereUniqueInput!
+    ): Profile!
   }
 `
 

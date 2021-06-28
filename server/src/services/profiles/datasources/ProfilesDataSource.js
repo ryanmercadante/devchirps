@@ -59,6 +59,26 @@ class ProfilesDataSource extends DataSource {
     }).exec()
     return deletedProfile._id
   }
+
+  followProfile(username, profileIdToFollow) {
+    return this.Profile.findOneAndUpdate(
+      { username },
+      { $addToSet: { following: profileIdToFollow } },
+      { new: true }
+    )
+  }
+
+  unfollowProfile(username, profileIdToUnfollow) {
+    return this.Profile.findOneAndUpdate(
+      { username },
+      { $pull: { following: profileIdToUnfollow } },
+      { new: true }
+    )
+  }
+
+  getFollowedProfiles(following) {
+    return this.Profile.find({ _id: { $in: following } }).exec()
+  }
 }
 
 export default ProfilesDataSource
