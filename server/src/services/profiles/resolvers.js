@@ -40,6 +40,9 @@ const resolvers = {
     profiles(parent, args, { dataSources }, info) {
       return dataSources.profilesAPI.getProfiles()
     },
+    searchProfiles(parent, { query: { text } }, { dataSources }, info) {
+      return dataSources.profilesAPI.searchProfiles(text)
+    },
   },
   Mutation: {
     createProfile(parent, { data }, { dataSources }, info) {

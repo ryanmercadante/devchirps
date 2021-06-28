@@ -79,6 +79,15 @@ class ProfilesDataSource extends DataSource {
   getFollowedProfiles(following) {
     return this.Profile.find({ _id: { $in: following } }).exec()
   }
+
+  searchProfiles(searchString) {
+    return this.Profile.find(
+      { $text: { $search: searchString } },
+      { score: { $meta: 'textScore' } }
+    )
+      .sort({ score: { $meta: 'textScore' }, _id: -1 })
+      .exec()
+  }
 }
 
 export default ProfilesDataSource

@@ -29,12 +29,23 @@ const typeDefs = gql`
     viewerIsFollowing: Boolean
   }
 
+  """
+  Provides a search string to query users by usernames or full names.
+  """
+  input ProfileSearchInput {
+    "The text string to search for in usernames or full names."
+    text: String!
+  }
+
   extend type Query {
     "Retrieves a single profile by username."
     profile(username: String!): Profile!
 
     "Retrieves a list of profiles."
     profiles: [Profile]
+
+    "Performs a search of user profiles."
+    searchProfiles(query: ProfileSearchInput!): [Profile]
   }
 
   """
