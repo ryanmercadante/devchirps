@@ -52,6 +52,13 @@ class ProfilesDataSource extends DataSource {
       new: true,
     })
   }
+
+  async deleteProfile(username) {
+    const deletedProfile = await this.Profile.findOneAndDelete({
+      username,
+    }).exec()
+    return deletedProfile._id
+  }
 }
 
 export default ProfilesDataSource

@@ -50,6 +50,9 @@ const resolvers = {
     ) {
       return dataSources.profilesAPI.updateProfile(currentUsername, data)
     },
+    deleteProfile(parent, { where: { username } }, { dataSources }, info) {
+      return dataSources.profilesAPI.deleteProfile(username)
+    },
   },
 }
 

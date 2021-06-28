@@ -80,6 +80,9 @@ const typeDefs = gql`
       data: UpdateProfileInput!
       where: ProfileWhereUniqueInput!
     ): Profile!
+
+    "Deletes a user profile."
+    deleteProfile(where: ProfileWhereUniqueInput!): ID!
   }
 `
 
