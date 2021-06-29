@@ -25,7 +25,10 @@ const resolvers = {
       )
     },
     following(profile, args, { dataSources }, info) {
-      return dataSources.profilesAPI.getFollowedProfiles(profile.following)
+      return dataSources.profilesAPI.getFollowedProfiles({
+        ...args,
+        following: profile.following,
+      })
     },
   },
   Query: {

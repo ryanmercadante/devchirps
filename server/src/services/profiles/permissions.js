@@ -26,18 +26,18 @@ const isEditingOwnProfile = rule()(
 
 const permissions = shield(
   {
-    Query: {
-      profile: canReadAnyProfile,
-      profiles: canReadAnyProfile,
-      searchProfiles: canReadAnyProfile,
-    },
-    Mutation: {
-      createProfile: and(canEditOwnProfile, isCreatingOwnProfile),
-      deleteProfile: and(canEditOwnProfile, isEditingOwnProfile),
-      followProfile: and(canEditOwnProfile, isEditingOwnProfile),
-      unfollowProfile: and(canEditOwnProfile, isEditingOwnProfile),
-      updateProfile: and(canEditOwnProfile, isEditingOwnProfile),
-    },
+    // Query: {
+    //   profile: canReadAnyProfile,
+    //   profiles: canReadAnyProfile,
+    //   searchProfiles: canReadAnyProfile,
+    // },
+    // Mutation: {
+    //   createProfile: and(canEditOwnProfile, isCreatingOwnProfile),
+    //   deleteProfile: and(canEditOwnProfile, isEditingOwnProfile),
+    //   followProfile: and(canEditOwnProfile, isEditingOwnProfile),
+    //   unfollowProfile: and(canEditOwnProfile, isEditingOwnProfile),
+    //   updateProfile: and(canEditOwnProfile, isEditingOwnProfile),
+    // },
   },
   { debug: process.env.NODE_ENV === 'development' }
 )

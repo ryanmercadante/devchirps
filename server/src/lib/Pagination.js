@@ -47,6 +47,8 @@ class Pagination {
     } else {
       // backward pagination happens here (later)
     }
+
+    return edges
   }
 
   // Get pagination information
