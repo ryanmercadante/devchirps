@@ -20,7 +20,13 @@ const typeDefs = gql`
     "A short bio or description about the user (max. 256 characters)."
     description: String
     "Other users that the user follows."
-    following: [Profile]
+    following(
+      first: Int
+      after: String
+      last: Int
+      before: String
+      orderBy: ProfileOrderByInput
+    ): ProfileConnection
     "The full name of the user."
     fullName: String
     "The unique username of the user."
