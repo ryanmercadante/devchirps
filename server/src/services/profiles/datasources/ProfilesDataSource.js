@@ -19,8 +19,13 @@ class ProfilesDataSource extends DataSource {
     return this.Profile.findById(id)
   }
 
-  getProfiles() {
-    return this.Profile.find({}).exec()
+  async getProfiles({ after, before, first, last, orderBy }) {
+    const sort = this._getProfileSort(orderBy)
+    const queryArgs = { after, before, first, last, sort }
+    const edges = await this.pagination.getEdges(queryArgs)
+    const pageInfo = await this.pagination.getPageInfo(edges, queryArgs)
+
+    return { edges, pageInfo }
   }
 
   async checkViewerFollowsProfile(viewerAccountId, profileId) {

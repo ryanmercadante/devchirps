@@ -92,7 +92,13 @@ const typeDefs = gql`
     profile(username: String!): Profile!
 
     "Retrieves a list of profiles."
-    profiles: [Profile]
+    profiles(
+      after: String
+      before: String
+      first: Int
+      last: Int
+      ordreBy: ProfileOrderByInput
+    ): ProfileConnection
 
     "Performs a search of user profiles."
     searchProfiles(query: ProfileSearchInput!): [Profile]
