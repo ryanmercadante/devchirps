@@ -100,8 +100,16 @@ const typeDefs = gql`
       ordreBy: ProfileOrderByInput
     ): ProfileConnection
 
-    "Performs a search of user profiles."
-    searchProfiles(query: ProfileSearchInput!): [Profile]
+    """
+    Performs a search of user profiles.
+
+    Results are available in descending order by relevance only.
+    """
+    searchProfiles(
+      after: String
+      first: Int
+      query: ProfileSearchInput!
+    ): ProfileConnection
   }
 
   """
