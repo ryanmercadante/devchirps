@@ -5,7 +5,7 @@ import server from './config/apollo'
 const port = process.env.PORT
 
 const options = {
-  resources: ['tcp:4001', 'tcp:4002'],
+  resources: ['tcp:4001', 'tcp:4002', 'tcp:4003'],
 }
 
 waitOn(options)
