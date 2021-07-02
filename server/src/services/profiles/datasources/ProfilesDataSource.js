@@ -114,16 +114,14 @@ class ProfilesDataSource extends DataSource {
     return { edges, pageInfo }
   }
 
-  searchProfiles(searchString) {
+  async searchProfiles({ after, first, searchString }) {
     const sort = { score: { $meta: 'textScore' }, _id: -1 }
-    // finish function...
+    const filter = { $text: { $search: searchString } }
+    const queryArgs = { after, first, filter, sort }
+    const edges = await this.pagination.getEdges(queryArgs)
+    const pageInfo = await this.pagination.getPageInfo(edges, queryArgs)
 
-    return this.Profile.find(
-      { $text: { $search: searchString } },
-      { score: { $meta: 'textScore' } }
-    )
-      .sort({ score: { $meta: 'textScore' }, _id: -1 })
-      .exec()
+    return { edges, pageInfo }
   }
 }
 
