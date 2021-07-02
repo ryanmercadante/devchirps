@@ -8,6 +8,7 @@ class Pagination {
   // Get documents and cast them into the correct edge/node shape
   async getEdges(queryArgs) {
     const { after, before, first, last, filter = {}, sort = {} } = queryArgs
+    const isSearch = this._isSearchQuery(sort)
     let edges
 
     // handle user input errors
@@ -27,9 +28,26 @@ class Pagination {
       throw new UserInputError(
         'Maximum record request for `first` and `last` arguments is 100.'
       )
+    } else if (!first && isSearch) {
+      throw new UserInputError('Search queries may only be paginated forward.')
     }
 
-    if (first) {
+    if (isSearch) {
+      const operator = this._getOperator(sort)
+      const pipeline = await this._getSearchPipeline(
+        after,
+        filter,
+        first,
+        operator,
+        sort
+      )
+
+      const docs = await this.Model.aggregate(pipeline)
+
+      edges = docs.length
+        ? docs.map((doc) => ({ node: doc, cursor: doc._id }))
+        : []
+    } else if (first) {
       // forward pagination happens here
       const operator = this._getOperator(sort)
       const queryDoc = after
@@ -192,33 +210,69 @@ class Pagination {
 
   // Check if a next page of results is available
   async _getHasNextPage(endCursor, filter, sort) {
+    const isSearch = this._isSearchQuery(sort)
     const operator = this._getOperator(sort)
-    const queryDoc = await this._getFilterWithCursor(
-      endCursor,
-      filter,
-      operator,
-      sort
-    )
+    let nextPage
 
-    const nextPage = await this.Model.findOne(queryDoc).select('_id').sort(sort)
+    if (isSearch) {
+      const pipeline = await this._getSearchPipeline(
+        endCursor,
+        filter,
+        1,
+        operator,
+        sort
+      )
+
+      const result = await this.Model.aggregate(pipeline)
+      nextPage = result.length
+    } else {
+      const queryDoc = await this._getFilterWithCursor(
+        endCursor,
+        filter,
+        operator,
+        sort
+      )
+
+      nextPage = await this.Model.findOne(queryDoc).select('_id').sort(sort)
+    }
 
     return Boolean(nextPage)
   }
 
   // Check if a previous page of results is available
   async _getHasPreviousPage(startCursor, filter, sort) {
-    const reverseSort = this._reverseSortDirection(sort)
-    const operator = this._getOperator(reverseSort)
-    const queryDoc = await this._getFilterWithCursor(
-      startCursor,
-      filter,
-      operator,
-      reverseSort
-    )
+    const isSearch = this._isSearchQuery(sort)
+    let prevPage
 
-    const prevPage = await this.Model.findOne(queryDoc)
-      .select('_id')
-      .sort(reverseSort)
+    if (isSearch) {
+      const operator = this._getOperator(sort, {
+        checkPreviousTextScore: true,
+      })
+
+      const pipeline = await this._getSearchPipeline(
+        startCursor,
+        filter,
+        1,
+        operator,
+        sort
+      )
+
+      const result = await this.Model.aggregate(pipeline)
+      prevPage = result.length
+    } else {
+      const reverseSort = this._reverseSortDirection(sort)
+      const operator = this._getOperator(reverseSort)
+      const queryDoc = await this._getFilterWithCursor(
+        startCursor,
+        filter,
+        operator,
+        reverseSort
+      )
+
+      prevPage = await this.Model.findOne(queryDoc)
+        .select('_id')
+        .sort(reverseSort)
+    }
 
     return Boolean(prevPage)
   }

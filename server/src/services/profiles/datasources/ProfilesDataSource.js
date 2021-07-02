@@ -115,6 +115,9 @@ class ProfilesDataSource extends DataSource {
   }
 
   searchProfiles(searchString) {
+    const sort = { score: { $meta: 'textScore' }, _id: -1 }
+    // finish function...
+
     return this.Profile.find(
       { $text: { $search: searchString } },
       { score: { $meta: 'textScore' } }
